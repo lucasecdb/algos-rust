@@ -38,17 +38,6 @@ fn _sort<T>(a: &[T], start: usize, end: usize) -> Vec<T>
         return vec![a[start]];
     }
 
-    if (end - start) == 1 {
-        let first = a[start];
-        let second = a[end];
-
-        if first > second {
-            return vec![second, first];
-        } else {
-            return vec![first, second];
-        }
-    }
-
     let middle = (end + start) / 2;
 
     let first_half = _sort(a, start, middle);
