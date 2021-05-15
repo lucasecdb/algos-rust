@@ -1,9 +1,9 @@
-use std::cmp;
+use std::cmp::PartialOrd;
 
-fn merge<T>(a: &Vec<T>, b: &Vec<T>) -> Vec<T>
-    where T : cmp::PartialOrd + Copy
+fn merge<T>(a: &[T], b: &[T]) -> Vec<T>
+    where T : PartialOrd + Copy
 {
-    let mut result = vec![];
+    let mut result = Vec::with_capacity(a.len() + b.len());
 
     let mut i = 0;
     let mut j = 0;
@@ -31,8 +31,8 @@ fn merge<T>(a: &Vec<T>, b: &Vec<T>) -> Vec<T>
     result
 }
 
-fn _sort<T>(a: &Vec<T>, start: usize, end: usize) -> Vec<T>
-    where T : cmp::PartialOrd + Copy
+fn _sort<T>(a: &[T], start: usize, end: usize) -> Vec<T>
+    where T : PartialOrd + Copy
 {
     if start == end {
         return vec![a[start]];
@@ -54,15 +54,17 @@ fn _sort<T>(a: &Vec<T>, start: usize, end: usize) -> Vec<T>
     let first_half = _sort(a, start, middle);
     let second_half = _sort(a, middle + 1, end);
 
-    return merge(&first_half, &second_half);
+    merge(&first_half, &second_half)
 }
 
-pub fn merge_sort<T>(a: &Vec<T>) -> Vec<T>
-    where T : cmp::PartialOrd + Copy
+pub fn merge_sort<T>(a: &[T]) -> Vec<T>
+    where T : PartialOrd + Copy
 {
-    let sorted = _sort(a, 0, a.len() - 1);
+    if a.is_empty() {
+        return vec![];
+    }
 
-    sorted
+    _sort(a, 0, a.len() - 1)
 }
 
 #[cfg(test)]
@@ -70,46 +72,54 @@ mod tests {
     use super::*;
 
     #[test]
+    fn empty_vec() {
+        assert_eq!(
+            merge_sort::<i32>(&[]),
+            [],
+        );
+    }
+
+    #[test]
     fn one_size_vec() {
         assert_eq!(
-            merge_sort(&vec![1]),
-            vec![1],
+            merge_sort(&[1]),
+            [1],
         );
     }
 
     #[test]
     fn two_size_vec() {
         assert_eq!(
-            merge_sort(&vec![2, 1]),
-            vec![1, 2],
+            merge_sort(&[2, 1]),
+            [1, 2],
         );
     }
 
     #[test]
-    fn base_sort() {
+    fn simple_sort() {
         assert_eq!(
-            merge_sort(&vec![1, 2, 3, 5, 4]),
-            vec![1, 2, 3, 4, 5]
+            merge_sort(&[1, 2, 3, 5, 4]),
+            [1, 2, 3, 4, 5]
         );
     }
 
     #[test]
     fn inverted_array() {
         assert_eq!(
-            merge_sort(&vec![5, 4, 3, 2, 1]),
-            vec![1, 2, 3, 4, 5]
+            merge_sort(&[5, 4, 3, 2, 1]),
+            [1, 2, 3, 4, 5]
         );
     }
 
     #[test]
     fn large_vec() {
-        let mut vec = (0..10).collect::<Vec<_>>();
+        let mut vec = (0..20).collect::<Vec<_>>();
 
         vec.reverse();
 
         assert_eq!(
             merge_sort(&vec),
-            vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            (0..20).collect::<Vec<_>>()
         );
     }
 }
