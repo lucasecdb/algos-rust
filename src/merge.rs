@@ -102,13 +102,13 @@ mod tests {
 
     #[test]
     fn large_vec() {
-        let mut vec = (0..20).collect::<Vec<_>>();
+        let mut vec = (0..2000).collect::<Vec<_>>();
 
         vec.reverse();
 
         assert_eq!(
             merge_sort(&vec),
-            (0..20).collect::<Vec<_>>()
+            (0..2000).collect::<Vec<_>>()
         );
     }
 }
