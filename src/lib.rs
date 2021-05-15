@@ -1,3 +1,3 @@
-mod merge;
+pub mod sort;
 
-pub use merge::merge_sort;
+pub use sort::merge::merge_sort;

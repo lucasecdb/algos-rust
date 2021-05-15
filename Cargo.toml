@@ -1,5 +1,5 @@
 [package]
-name = "sorting-rust"
+name = "algos-rust"
 version = "0.1.0"
 authors = ["Lucas Cordeiro <ecdb.lucas@gmail.com>"]
 edition = "2018"

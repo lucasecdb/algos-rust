@@ -1,5 +1,5 @@
 use std::env;
-use sorting_rust::merge_sort;
+use algos_rust::merge_sort;
 
 fn main() {
     let mut args = env::args();
